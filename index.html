@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wedding Invitation</title>
+    <title>Wedding Invitation - Ali & Fatima</title>
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -12,13 +13,13 @@
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
-        } 
+        }
 
         body {
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background-color: #050505;
+            background-color: #0a0a0a;
             color: #fff;
             font-family: 'Cairo', sans-serif;
             user-select: none;
@@ -26,7 +27,12 @@
             touch-action: none;
         }
 
-        #bgVideo {
+        /* --- Audio & Video Elements (Hidden) --- */
+        #wedding-audio {
+            display: none;
+        }
+
+        #background-video {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -37,17 +43,18 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
             z-index: 1;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            pointer-events: none;
+            opacity: 0; /* Hidden initially */
+            transition: opacity 2s ease-in-out;
+            pointer-events: none; /* User cannot interact with it */
         }
 
+        /* --- Doors --- */
         .door {
             position: fixed;
             top: 0;
             width: 50vw;
             height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            background: linear-gradient(135deg, #1f1f1f 0%, #000000 100%);
             z-index: 50;
             transition: transform 2.5s cubic-bezier(0.645, 0.045, 0.355, 1);
             display: flex;
@@ -60,8 +67,8 @@
             position: absolute;
             width: 8px;
             height: 100vh;
-            background: linear-gradient(to bottom, #8a6327, #d4af37, #f9e596, #d4af37, #8a6327);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            background: linear-gradient(to bottom, #a67c2e, #f7d794, #f7d794, #a67c2e);
+            box-shadow: 0 0 15px rgba(247, 215, 148, 0.5);
         }
 
         #door-left {
@@ -90,20 +97,21 @@
             transform: translateX(100%);
         }
 
+        /* --- Action Button --- */
         #start-btn {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 60;
-            background: linear-gradient(135deg, #d4af37, #b58500);
+            background: linear-gradient(135deg, #f7d794, #a67c2e);
             color: #fff;
-            border: 2px solid #f9e596;
-            padding: 15px 50px;
+            border: 2px solid #f7d794;
+            padding: 18px 60px;
             font-family: 'Aref Ruqaa', serif;
             font-size: 2.2rem;
             border-radius: 50px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+            box-shadow: 0 0 40px rgba(166, 124, 46, 0.8);
             cursor: pointer;
             transition: all 0.4s ease;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
@@ -114,6 +122,7 @@
             transform: translate(-50%, -50%) scale(0.95);
         }
 
+        /* --- screens --- */
         .screen {
             position: fixed;
             top: 0;
@@ -128,7 +137,7 @@
             z-index: 10;
             text-align: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(0, 0, 0, 0.45); /* Semi-transparent background for text readability over video */
             transition: opacity 1.5s ease-in-out;
             pointer-events: none;
         }
@@ -138,8 +147,9 @@
             pointer-events: auto;
         }
 
+        /* --- text animations --- */
         .screen.active > * {
-            animation: slideUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation: slideUpFade 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             opacity: 0;
             transform: translateY(40px);
         }
@@ -155,12 +165,13 @@
             }
         }
 
+        /* --- Specific Text Styling --- */
         .names-title {
             font-family: 'Aref Ruqaa', serif;
             font-size: 5rem;
-            color: #d4af37;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            margin-bottom: 20px;
+            color: #f7d794;
+            text-shadow: 0 0 25px rgba(166, 124, 46, 1), 0 0 10px rgba(255, 255, 255, 0.3);
+            margin-bottom: 25px;
         }
 
         .heart {
@@ -178,50 +189,55 @@
 
         .quote-text {
             font-family: 'Amiri', serif;
-            font-size: 3rem;
-            line-height: 1.5;
-            color: #f9e596;
-            margin-bottom: 20px;
+            font-size: 3.2rem;
+            line-height: 1.4;
+            color: #f7d794;
+            text-shadow: 0 0 15px rgba(166, 124, 46, 0.8);
+            margin-bottom: 25px;
         }
 
         .sub-text {
             font-family: 'Cairo', sans-serif;
-            font-size: 1.4rem;
-            line-height: 1.8;
+            font-size: 1.5rem;
+            line-height: 1.9;
             color: #e0e0e0;
-            max-width: 80%;
+            max-width: 85%;
         }
 
         .date-box {
-            border-top: 1px solid #d4af37;
-            border-bottom: 1px solid #d4af37;
-            padding: 20px 0;
-            margin: 20px 0;
+            border-top: 1px solid #f7d794;
+            border-bottom: 1px solid #f7d794;
+            padding: 25px 0;
+            margin: 25px 0;
             width: 80%;
         }
         
         .date-text {
             font-family: 'Amiri', serif;
-            font-size: 2.5rem;
-            color: #d4af37;
+            font-size: 2.8rem;
+            color: #f7d794;
         }
     </style>
 </head>
 <body>
 
-    <audio id="bgAudio" loop preload="auto">
+    <!-- Audio and Video Elements -->
+    <audio id="wedding-audio" loop preload="auto">
         <source src="audio.mp3" type="audio/mpeg">
     </audio>
 
-    <video id="bgVideo" muted playsinline loop autoplay preload="auto">
+    <video id="background-video" muted playsinline loop preload="auto">
         <source src="video.mp4" type="video/mp4">
     </video>
 
+    <!-- Entry Doors -->
     <div id="door-left" class="door"></div>
     <div id="door-right" class="door"></div>
     
-    <button id="start-btn">افتح الدوة</button>
+    <!-- Action Button -->
+    <button id="start-btn">افتح الدعوة</button>
 
+    <!-- screens -->
     <div id="screen-1" class="screen">
         <h1 class="names-title">علي <span class="heart">❤️</span> فاطمة</h1>
         <p class="sub-text">فرحتنا ما تكمل إلا بوجودكم ويانا</p>
@@ -237,17 +253,17 @@
 
     <div id="screen-3" class="screen">
         <h2 class="quote-text">المكان والتفاصيل</h2>
-        <p class="sub-text" style="font-size: 1.6rem; color:#d4af37; margin-bottom: 10px;">قاعات بغداد الملكية - شارع الأميرات</p>
+        <p class="sub-text" style="font-size: 1.8rem; color:#f7d794; margin-bottom: 15px; font-weight: bold;">قاعات بغداد الملكية - شارع الأميرات</p>
         <p class="sub-text">حضوركم يزيد الفرحة فرحتين<br>بإنتظاركم</p>
     </div>
 
     <script>
+        // DOM Elements
         const startBtn = document.getElementById('start-btn');
         const doorLeft = document.getElementById('door-left');
         const doorRight = document.getElementById('door-right');
-        const bgVideo = document.getElementById('bgVideo');
-        const bgAudio = document.getElementById('bgAudio');
-        
+        const weddingAudio = document.getElementById('wedding-audio');
+        const backgroundVideo = document.getElementById('background-video');
         const screens = [
             document.getElementById('screen-1'),
             document.getElementById('screen-2'),
@@ -255,52 +271,55 @@
         ];
         
         let currentScreenIndex = 0;
+        let screenIntervalId;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            bgVideo.play().catch(() => {});
-        });
-
-        startBtn.addEventListener('click', function() {
+        // Start Invitation Action
+        startBtn.addEventListener('click', () => {
+            // 1. Hide Button immediately
             startBtn.style.opacity = '0';
             startBtn.style.pointerEvents = 'none';
 
+            // 2. Play Audio & Video (Crucial: Play upon user interaction)
+            weddingAudio.play().catch(e => console.error("Audio play failed:", e));
+            backgroundVideo.play().catch(e => console.error("Video play failed:", e));
+
+            // 3. Make Video Visible and Fade-in
+            backgroundVideo.style.opacity = '1';
+
+            // 4. Start Door Animation
             doorLeft.classList.add('open-left');
             doorRight.classList.add('open-right');
 
-            bgVideo.muted = true;
-            bgVideo.play().then(() => {
-                bgVideo.style.opacity = '1';
-            }).catch(err => {
-                console.log(err);
-                bgVideo.style.opacity = '1';
-            });
-
-            bgAudio.play().catch(e => console.error(e));
-
+            // 5. Start screens Cycle after door delay
             setTimeout(() => {
                 showNextScreen();
             }, 1800);
         });
 
+        // screen Cycle Function
         function showNextScreen() {
+            // Remove active class from previous screen
             if (currentScreenIndex > 0) {
                 screens[currentScreenIndex - 1].classList.remove('active');
             }
 
+            // Check if there are more screens
             if (currentScreenIndex < screens.length) {
                 screens[currentScreenIndex].classList.add('active');
                 
+                // Show next screen after 7 seconds
                 setTimeout(() => {
                     currentScreenIndex++;
                     showNextScreen();
-                }, 6000); 
+                }, 7000); 
             } else {
+                // Loop back to the first screen
                 currentScreenIndex = 0;
                 screens[0].classList.add('active');
                 setTimeout(() => {
                     currentScreenIndex++;
                     showNextScreen();
-                }, 6000);
+                }, 7000);
             }
         }
     </script>
