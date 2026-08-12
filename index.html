@@ -2,309 +2,325 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>دعوة زفاف - علي و فاطمة</title>
-    
-    <!-- تحميل الخطوط الملكية -->
-    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wedding Invitation - Ali & Fatima</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* تصحيحات أساسية للموبايل لتبدو كتطبيق */
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; outline: none; }
-        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            width: 100vw; height: 100vh;
-            overflow: hidden; background-color: #000; /* خلفية سوداء مطلقة */
-            color: #fff; font-family: 'Arial', sans-serif;
-            user-select: none; -webkit-user-select: none; touch-action: none;
-            position: relative;
-        }
-
-        /* حاوية الفيديو الخلفية - مخفية تماماً في البداية */
-        #video-wrapper {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 1s ease; /* ظهور ناعم للفيديو */
+            width: 100vw;
+            height: 100vh;
             overflow: hidden;
+            background-color: #0a0a0a;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
         }
 
-        video#bgVideo {
-            width: 100%; height: 100%;
-            object-fit: cover; /* ملء الشاشة بدون تشويه */
-            display: block;
+        /* --- Audio & Video Elements (Hidden) --- */
+        #wedding-audio {
+            display: none;
         }
 
-        /* طبقة حماية للنصوص فوق الفيديو لضمان القراءة */
-        .video-overlay {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* تعتيم خفيف فوق الفيديو */
-            z-index: 2;
-        }
-
-        /* --- تصميم الأبواب الملكية --- */
-        .door-container {
-            position: fixed; top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: 100; /* فوق كل شيء */
-            display: flex;
-            transition: visibility 0s 2.5s; /* إخفاء الحاوية بعد الأنيميشن */
-        }
-
-        .door {
-            width: 50vw; height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-            position: relative;
-            transition: transform 2.5s cubic-bezier(0.77, 0, 0.175, 1);
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
-            border-{{#ifCond dir '==' 'rtl'}}left{{else}}right{{/ifCond}}: 2px solid #333;
-        }
-
-        /* الزخرفة الذهبية على حافة الباب */
-        .door::after {
-            content: ''; position: absolute;
-            top: 0; {{#ifCond dir '==' 'rtl'}}left{{else}}right{{/ifCond}}: -4px;
-            width: 8px; height: 100%;
-            background: linear-gradient(to bottom, #bf9b30, #f7d794, #d4af37, #bf9b30);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-        }
-
-        #door-left { transform: translateX(0); }
-        #door-right { transform: translateX(0); }
-
-        /* فلاسات الحركة لفتح الأبواب */
-        .open #door-left { transform: translateX(-100%); }
-        .open #door-right { transform: translateX(100%); }
-        .open .door-container { visibility: hidden; }
-
-        /* --- زر الفتح الذهبي --- */
-        #start-btn {
-            position: absolute; top: 50%; left: 50%;
+        #background-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100vw;
+            min-height: 100vh;
+            width: auto;
+            height: auto;
             transform: translate(-50%, -50%);
-            z-index: 110; /* فوق الأبواب */
-            background: linear-gradient(135deg, #f7d794 0%, #d4af37 100%);
-            color: #54400f; /* لون نص بني غامق ملكي */
-            border: 3px solid #f7d794;
-            padding: 20px 60px;
+            object-fit: cover;
+            z-index: 1;
+            opacity: 0; /* Hidden initially */
+            transition: opacity 2s ease-in-out;
+            pointer-events: none; /* User cannot interact with it */
+        }
+
+        /* --- Doors --- */
+        .door {
+            position: fixed;
+            top: 0;
+            width: 50vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1f1f1f 0%, #000000 100%);
+            z-index: 50;
+            transition: transform 2.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        .door::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 100vh;
+            background: linear-gradient(to bottom, #a67c2e, #f7d794, #f7d794, #a67c2e);
+            box-shadow: 0 0 15px rgba(247, 215, 148, 0.5);
+        }
+
+        #door-left {
+            left: 0;
+            justify-content: flex-end;
+        }
+
+        #door-left::after {
+            right: 0;
+        }
+
+        #door-right {
+            right: 0;
+            justify-content: flex-start;
+        }
+
+        #door-right::after {
+            left: 0;
+        }
+
+        .open-left {
+            transform: translateX(-100%);
+        }
+
+        .open-right {
+            transform: translateX(100%);
+        }
+
+        /* --- Action Button --- */
+        #start-btn {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 60;
+            background: linear-gradient(135deg, #f7d794, #a67c2e);
+            color: #fff;
+            border: 2px solid #f7d794;
+            padding: 18px 60px;
             font-family: 'Aref Ruqaa', serif;
-            font-size: 2.5rem; font-weight: bold;
+            font-size: 2.2rem;
             border-radius: 50px;
-            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.7);
+            box-shadow: 0 0 40px rgba(166, 124, 46, 0.8);
             cursor: pointer;
-            transition: all 0.3s ease, opacity 0.5s ease;
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
+            transition: all 0.4s ease;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            outline: none;
         }
 
-        #start-btn:active { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 5px 20px rgba(212, 175, 55, 0.5); }
-        .loading #start-btn { opacity: 0.5; pointer-events: none; } /* تعتيم الزر أثناء التحميل */
-
-        /* --- حاوية الصفحات (Screens) --- */
-        .screens-container {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 10; /* فوق حاوية الفيديو */
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            text-align: center;
+        #start-btn:active {
+            transform: translate(-50%, -50%) scale(0.95);
         }
 
+        /* --- screens --- */
         .screen {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
-            pointer-events: none;
+            z-index: 10;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.45); /* Semi-transparent background for text readability over video */
             transition: opacity 1.5s ease-in-out;
-            padding: 40px;
+            pointer-events: none;
         }
 
-        .screen.active { opacity: 1; pointer-events: auto; }
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-        /* --- أنيميشن دخول النصوص --- */
+        /* --- text animations --- */
         .screen.active > * {
-            animation: textIn 1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-            opacity: 0; transform: translateY(30px);
+            animation: slideUpFade 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
         }
 
-        .screen.active > *:nth-child(1) { animation-delay: 0.3s; }
-        .screen.active > *:nth-child(2) { animation-delay: 0.9s; }
-        .screen.active > *:nth-child(3) { animation-delay: 1.5s; }
+        .screen.active > *:nth-child(1) { animation-delay: 0.2s; }
+        .screen.active > *:nth-child(2) { animation-delay: 0.8s; }
+        .screen.active > *:nth-child(3) { animation-delay: 1.4s; }
 
-        @keyframes textIn { to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUpFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        /* --- استايلات النصوص العراقية الجميلة --- */
+        /* --- Specific Text Styling --- */
         .names-title {
             font-family: 'Aref Ruqaa', serif;
-            font-size: 5.5rem;
-            color: #f7d794; /* ذهبي فاتح مضيء */
-            text-shadow: 0 0 25px rgba(212, 175, 55, 0.8), 0 0 5px rgba(255, 255, 255, 0.5);
-            margin-bottom: 20px;
+            font-size: 5rem;
+            color: #f7d794;
+            text-shadow: 0 0 25px rgba(166, 124, 46, 1), 0 0 10px rgba(255, 255, 255, 0.3);
+            margin-bottom: 25px;
         }
 
         .heart {
-            color: #e74c3c; font-size: 3.5rem;
-            animation: heartbeat 1.2s infinite; display: inline-block;
+            color: #e74c3c;
+            font-size: 3rem;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
         }
 
-        @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.25); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } 60% { transform: scale(1); } }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
 
         .quote-text {
             font-family: 'Amiri', serif;
-            font-size: 3.2rem; font-weight: bold;
-            line-height: 1.3; color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            margin-bottom: 30px;
+            font-size: 3.2rem;
+            line-height: 1.4;
+            color: #f7d794;
+            text-shadow: 0 0 15px rgba(166, 124, 46, 0.8);
+            margin-bottom: 25px;
+        }
+
+        .sub-text {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.5rem;
+            line-height: 1.9;
+            color: #e0e0e0;
+            max-width: 85%;
         }
 
         .date-box {
-            border-top: 2px solid #f7d794; border-bottom: 2px solid #f7d794;
-            padding: 20px 0; margin: 30px 0; width: 90%; max-width: 500px;
+            border-top: 1px solid #f7d794;
+            border-bottom: 1px solid #f7d794;
+            padding: 25px 0;
+            margin: 25px 0;
+            width: 80%;
         }
         
         .date-text {
             font-family: 'Amiri', serif;
-            font-size: 2.8rem; color: #f7d794; font-weight: bold;
-        }
-
-        .sub-text {
-            font-family: 'Arial', sans-serif; /* خط بسيط ومقروء */
-            font-size: 1.6rem; line-height: 1.6;
-            color: #e0e0e0; max-width: 85%;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-        }
-
-        /* تصميم خاص لصفحة العنوان */
-        .location-text {
-            font-family: 'Arial', sans-serif;
-            font-size: 2rem; color: #f7d794;
-            font-weight: bold; margin-bottom: 15px;
+            font-size: 2.8rem;
+            color: #f7d794;
         }
     </style>
 </head>
-<body class="loading"> <!-- تبدأ الحالة بـ تحميل -->
+<body>
 
-    <!-- البيبان -->
-    <div id="door-container" class="door-container">
-        <div id="door-left" class="door"></div>
-        <div id="door-right" class="door"></div>
-    </div>
-    
-    <!-- زر الفتح -->
-    <button id="start-btn">افتح الدوة</button>
-
-    <!-- حاوية الفيديو والخلفية -->
-    <div id="video-wrapper">
-        <div class="video-overlay"></div>
-        <video id="bgVideo" loop muted playsinline preload="auto">
-            <source src="video.mp4" type="video/mp4">
-        </video>
-    </div>
-
-    <!-- حاوية الصوت -->
-    <audio id="bgAudio" loop preload="auto">
+    <!-- Audio and Video Elements -->
+    <audio id="wedding-audio" loop preload="auto">
         <source src="audio.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- الصفحات -->
-    <div class="screens-container">
-        <div id="screen-1" class="screen">
-            <h1 class="names-title">علي <span class="heart">❤️</span> فاطمة</h1>
-            <p class="sub-text">يا هلا بيكم، فرحتنا ما تكمل إلا بوجودكم ويانا</p>
-        </div>
+    <video id="background-video" muted playsinline loop preload="auto">
+        <source src="video.mp4" type="video/mp4">
+    </video>
 
-        <div id="screen-2" class="screen">
-            <h2 class="quote-text">أخذتها بـ فخر.. وصارت حلالي</h2>
-            <div class="date-box">
-                <div class="date-text">23 / 8 / 2026</div>
-            </div>
-            <p class="sub-text">ننتظركم تشاركونا هاليوم الحلو.. جيتكم تنورنا وتزيدنا فرح</p>
-        </div>
+    <!-- Entry Doors -->
+    <div id="door-left" class="door"></div>
+    <div id="door-right" class="door"></div>
+    
+    <!-- Action Button -->
+    <button id="start-btn">افتح الدعوة</button>
 
-        <div id="screen-3" class="screen">
-            <h2 class="quote-text">المكان والتفاصيل</h2>
-            <p class="location-text">قاعات بغداد الملكية - شارع الأميرات</p>
-            <p class="sub-text">حضوركم يشرفنا ويسعدنا<br>بإنتظاركم</p>
+    <!-- screens -->
+    <div id="screen-1" class="screen">
+        <h1 class="names-title">علي <span class="heart">❤️</span> فاطمة</h1>
+        <p class="sub-text">فرحتنا ما تكمل إلا بوجودكم ويانا</p>
+    </div>
+
+    <div id="screen-2" class="screen">
+        <h2 class="quote-text">أخذتها بـ فخر.. وصارت حلالي</h2>
+        <div class="date-box">
+            <div class="date-text">23 / 8 / 2026</div>
         </div>
+        <p class="sub-text">ننتظركم تشاركونا هاليوم الحلو.. هلا بيكم وبجيتكم اللي تنورنا</p>
+    </div>
+
+    <div id="screen-3" class="screen">
+        <h2 class="quote-text">المكان والتفاصيل</h2>
+        <p class="sub-text" style="font-size: 1.8rem; color:#f7d794; margin-bottom: 15px; font-weight: bold;">قاعات بغداد الملكية - شارع الأميرات</p>
+        <p class="sub-text">حضوركم يزيد الفرحة فرحتين<br>بإنتظاركم</p>
     </div>
 
     <script>
-        const body = document.body;
+        // DOM Elements
         const startBtn = document.getElementById('start-btn');
-        const doorContainer = document.getElementById('door-container');
-        const videoWrapper = document.getElementById('video-wrapper');
-        const bgVideo = document.getElementById('bgVideo');
-        const bgAudio = document.getElementById('bgAudio');
-        const screens = document.querySelectorAll('.screen');
+        const doorLeft = document.getElementById('door-left');
+        const doorRight = document.getElementById('door-right');
+        const weddingAudio = document.getElementById('wedding-audio');
+        const backgroundVideo = document.getElementById('background-video');
+        const screens = [
+            document.getElementById('screen-1'),
+            document.getElementById('screen-2'),
+            document.getElementById('screen-3')
+        ];
         
-        let currentScreen = 0;
+        let currentScreenIndex = 0;
+        let screenIntervalId;
 
-        // الخطة ج: التأكد من تحميل الفيديو قبل السماح بالفتح
-        window.addEventListener('load', () => {
-            // نخبر المتصفح أن يحمل الفيديو
-            bgVideo.load();
-            // نزيل حالة التحميل من الـ body
-            body.classList.remove('loading');
-        });
-
+        // Start Invitation Action
         startBtn.addEventListener('click', () => {
-            // 1. كتم الفيديو (أهم خطوة لضمان التشغيل تلقائياً كخلفية)
-            bgVideo.muted = true;
-
-            // 2. محاولة تشغيل الفيديو غصباً على المتصفح
-            const playVideoPromise = bgVideo.play();
-
-            if (playVideoPromise !== undefined) {
-                playVideoPromise.then(() => {
-                    // الفيديو بدأ يشتغل فعلياً بالخلفية
-                    startInvitationSequence();
-                }).catch(error => {
-                    // فشل تشغيل الفيديو (احتمال ضعيف جداً هسة)
-                    console.error("Video play failed:", error);
-                    // حتى لو فشل الفيديو، نفتح الدعوة علمود لا تخرب
-                    startInvitationSequence();
-                });
-            } else {
-                // متصفحات قديمة لا تدعم الـ Promise
-                bgVideo.play();
-                startInvitationSequence();
-            }
-        });
-
-        function startInvitationSequence() {
-            // أ. إخفاء الزر
+            // 1. Hide Button immediately
             startBtn.style.opacity = '0';
             startBtn.style.pointerEvents = 'none';
 
-            // ب. تشغيل الصوت (هذا مسموح ويه ضغطة الزر)
-            bgAudio.play().catch(e => console.error("Audio failed:", e));
+            // 2. Play Audio & Video (Crucial: Play upon user interaction)
+            weddingAudio.play().catch(e => console.error("Audio play failed:", e));
+            backgroundVideo.play().catch(e => console.error("Video play failed:", e));
 
-            // ج. إظهار حاوية الفيديو (تظهر بسلاسة)
-            videoWrapper.style.opacity = '1';
+            // 3. Make Video Visible and Fade-in
+            backgroundVideo.style.opacity = '1';
 
-            // د. فتح البيبان (الأنيميشن يبدأ)
-            doorContainer.classList.add('open');
+            // 4. Start Door Animation
+            doorLeft.classList.add('open-left');
+            doorRight.classList.add('open-right');
 
-            // هـ. بدء دورة الصفحات بعد تأخير الأنيميشن
+            // 5. Start screens Cycle after door delay
             setTimeout(() => {
                 showNextScreen();
-            }, 2000); // تأخير قليل قبل أول صفحة
-        }
+            }, 1800);
+        });
 
+        // screen Cycle Function
         function showNextScreen() {
-            // إخفاء الصفحة الحالية
-            screens.forEach(screen => screen.classList.remove('active'));
+            // Remove active class from previous screen
+            if (currentScreenIndex > 0) {
+                screens[currentScreenIndex - 1].classList.remove('active');
+            }
 
-            // إظهار الصفحة التالية
-            screens[currentScreen].classList.add('active');
-            
-            // تحديث العداد للجمعة القادمة
-            currentScreen = (currentScreen + 1) % screens.length;
-
-            // تحديد وقت العرض (7 ثواني لكل صفحة)
-            setTimeout(showNextScreen, 7000);
+            // Check if there are more screens
+            if (currentScreenIndex < screens.length) {
+                screens[currentScreenIndex].classList.add('active');
+                
+                // Show next screen after 7 seconds
+                setTimeout(() => {
+                    currentScreenIndex++;
+                    showNextScreen();
+                }, 7000); 
+            } else {
+                // Loop back to the first screen
+                currentScreenIndex = 0;
+                screens[0].classList.add('active');
+                setTimeout(() => {
+                    currentScreenIndex++;
+                    showNextScreen();
+                }, 7000);
+            }
         }
     </script>
 </body>
