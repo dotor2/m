@@ -28,14 +28,17 @@
 
         #bgVideo {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 50%;
+            left: 50%;
+            min-width: 100vw;
+            min-height: 100vh;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
             object-fit: cover;
             z-index: 1;
             opacity: 0;
-            transition: opacity 2.5s ease-in-out;
+            transition: opacity 1.5s ease-in-out;
             pointer-events: none;
         }
 
@@ -125,7 +128,7 @@
             z-index: 10;
             text-align: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.55);
             transition: opacity 1.5s ease-in-out;
             pointer-events: none;
         }
@@ -206,18 +209,18 @@
 </head>
 <body>
 
-    <audio id="bgAudio" loop>
+    <audio id="bgAudio" loop preload="auto">
         <source src="audio.mp3" type="audio/mpeg">
     </audio>
 
-    <video id="bgVideo" muted playsinline loop>
+    <video id="bgVideo" muted playsinline loop autoplay preload="auto">
         <source src="video.mp4" type="video/mp4">
     </video>
 
     <div id="door-left" class="door"></div>
     <div id="door-right" class="door"></div>
     
-    <button id="start-btn">افتح الدعوة</button>
+    <button id="start-btn">افتح الدوة</button>
 
     <div id="screen-1" class="screen">
         <h1 class="names-title">علي <span class="heart">❤️</span> فاطمة</h1>
@@ -253,6 +256,10 @@
         
         let currentScreenIndex = 0;
 
+        document.addEventListener('DOMContentLoaded', () => {
+            bgVideo.play().catch(() => {});
+        });
+
         startBtn.addEventListener('click', function() {
             startBtn.style.opacity = '0';
             startBtn.style.pointerEvents = 'none';
@@ -260,10 +267,15 @@
             doorLeft.classList.add('open-left');
             doorRight.classList.add('open-right');
 
-            bgVideo.play().catch(e => console.error(e));
+            bgVideo.muted = true;
+            bgVideo.play().then(() => {
+                bgVideo.style.opacity = '1';
+            }).catch(err => {
+                console.log(err);
+                bgVideo.style.opacity = '1';
+            });
+
             bgAudio.play().catch(e => console.error(e));
-            
-            bgVideo.style.opacity = '1';
 
             setTimeout(() => {
                 showNextScreen();
