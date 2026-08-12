@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Wedding Invitation - Ali & Fatima</title>
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -27,7 +26,6 @@
             touch-action: none;
         }
 
-        /* --- Audio & Video Elements (Hidden) --- */
         #wedding-audio {
             display: none;
         }
@@ -43,12 +41,11 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
             z-index: 1;
-            opacity: 0; /* Hidden initially */
+            opacity: 0;
             transition: opacity 2s ease-in-out;
-            pointer-events: none; /* User cannot interact with it */
+            pointer-events: none;
         }
 
-        /* --- Doors --- */
         .door {
             position: fixed;
             top: 0;
@@ -97,7 +94,6 @@
             transform: translateX(100%);
         }
 
-        /* --- Action Button --- */
         #start-btn {
             position: fixed;
             top: 50%;
@@ -122,7 +118,6 @@
             transform: translate(-50%, -50%) scale(0.95);
         }
 
-        /* --- screens --- */
         .screen {
             position: fixed;
             top: 0;
@@ -137,7 +132,7 @@
             z-index: 10;
             text-align: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.45); /* Semi-transparent background for text readability over video */
+            background: rgba(0, 0, 0, 0.45);
             transition: opacity 1.5s ease-in-out;
             pointer-events: none;
         }
@@ -147,7 +142,6 @@
             pointer-events: auto;
         }
 
-        /* --- text animations --- */
         .screen.active > * {
             animation: slideUpFade 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             opacity: 0;
@@ -165,7 +159,6 @@
             }
         }
 
-        /* --- Specific Text Styling --- */
         .names-title {
             font-family: 'Aref Ruqaa', serif;
             font-size: 5rem;
@@ -221,23 +214,19 @@
 </head>
 <body>
 
-    <!-- Audio and Video Elements -->
     <audio id="wedding-audio" loop preload="auto">
         <source src="audio.mp3" type="audio/mpeg">
     </audio>
 
-    <video id="background-video" muted playsinline loop preload="auto">
-        <source src="video.mp4" type="video/mp4">
+    <video id="background-video" autoplay muted playsinline loop preload="auto">
+        <source src="./video.mp4" type="video/mp4">
     </video>
 
-    <!-- Entry Doors -->
     <div id="door-left" class="door"></div>
     <div id="door-right" class="door"></div>
     
-    <!-- Action Button -->
     <button id="start-btn">افتح الدعوة</button>
 
-    <!-- screens -->
     <div id="screen-1" class="screen">
         <h1 class="names-title">علي <span class="heart">❤️</span> فاطمة</h1>
         <p class="sub-text">فرحتنا ما تكمل إلا بوجودكم ويانا</p>
@@ -258,7 +247,6 @@
     </div>
 
     <script>
-        // DOM Elements
         const startBtn = document.getElementById('start-btn');
         const doorLeft = document.getElementById('door-left');
         const doorRight = document.getElementById('door-right');
@@ -271,49 +259,37 @@
         ];
         
         let currentScreenIndex = 0;
-        let screenIntervalId;
 
-        // Start Invitation Action
         startBtn.addEventListener('click', () => {
-            // 1. Hide Button immediately
             startBtn.style.opacity = '0';
             startBtn.style.pointerEvents = 'none';
 
-            // 2. Play Audio & Video (Crucial: Play upon user interaction)
-            weddingAudio.play().catch(e => console.error("Audio play failed:", e));
-            backgroundVideo.play().catch(e => console.error("Video play failed:", e));
+            weddingAudio.play().catch(e => console.error(e));
+            backgroundVideo.play().catch(e => console.error(e));
 
-            // 3. Make Video Visible and Fade-in
             backgroundVideo.style.opacity = '1';
 
-            // 4. Start Door Animation
             doorLeft.classList.add('open-left');
             doorRight.classList.add('open-right');
 
-            // 5. Start screens Cycle after door delay
             setTimeout(() => {
                 showNextScreen();
             }, 1800);
         });
 
-        // screen Cycle Function
         function showNextScreen() {
-            // Remove active class from previous screen
             if (currentScreenIndex > 0) {
                 screens[currentScreenIndex - 1].classList.remove('active');
             }
 
-            // Check if there are more screens
             if (currentScreenIndex < screens.length) {
                 screens[currentScreenIndex].classList.add('active');
                 
-                // Show next screen after 7 seconds
                 setTimeout(() => {
                     currentScreenIndex++;
                     showNextScreen();
                 }, 7000); 
             } else {
-                // Loop back to the first screen
                 currentScreenIndex = 0;
                 screens[0].classList.add('active');
                 setTimeout(() => {
