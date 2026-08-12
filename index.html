@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wedding Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #050505;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+
+        #bgVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 2.5s ease-in-out;
+            pointer-events: none;
+        }
+
+        .door {
+            position: fixed;
+            top: 0;
+            width: 50vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            z-index: 50;
+            transition: transform 2.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        .door::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 100vh;
+            background: linear-gradient(to bottom, #8a6327, #d4af37, #f9e596, #d4af37, #8a6327);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        #door-left {
+            left: 0;
+            justify-content: flex-end;
+        }
+
+        #door-left::after {
+            right: 0;
+        }
+
+        #door-right {
+            right: 0;
+            justify-content: flex-start;
+        }
+
+        #door-right::after {
+            left: 0;
+        }
+
+        .open-left {
+            transform: translateX(-100%);
+        }
+
+        .open-right {
+            transform: translateX(100%);
+        }
+
+        #start-btn {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 60;
+            background: linear-gradient(135deg, #d4af37, #b58500);
+            color: #fff;
+            border: 2px solid #f9e596;
+            padding: 15px 50px;
+            font-family: 'Aref Ruqaa', serif;
+            font-size: 2.2rem;
+            border-radius: 50px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            outline: none;
+        }
+
+        #start-btn:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        .screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            z-index: 10;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.65);
+            transition: opacity 1.5s ease-in-out;
+            pointer-events: none;
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .screen.active > * {
+            animation: slideUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .screen.active > *:nth-child(1) { animation-delay: 0.2s; }
+        .screen.active > *:nth-child(2) { animation-delay: 0.8s; }
+        .screen.active > *:nth-child(3) { animation-delay: 1.4s; }
+
+        @keyframes slideUpFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .names-title {
+            font-family: 'Aref Ruqaa', serif;
+            font-size: 5rem;
+            color: #d4af37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .heart {
+            color: #e74c3c;
+            font-size: 3rem;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .quote-text {
+            font-family: 'Amiri', serif;
+            font-size: 3rem;
+            line-height: 1.5;
+            color: #f9e596;
+            margin-bottom: 20px;
+        }
+
+        .sub-text {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+            max-width: 80%;
+        }
+
+        .date-box {
+            border-top: 1px solid #d4af37;
+            border-bottom: 1px solid #d4af37;
+            padding: 20px 0;
+            margin: 20px 0;
+            width: 80%;
+        }
+        
+        .date-text {
+            font-family: 'Amiri', serif;
+            font-size: 2.5rem;
+            color: #d4af37;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgAudio" loop>
+        <source src="audio.mp3" type="audio/mpeg">
+    </audio>
+
+    <video id="bgVideo" muted playsinline loop>
+        <source src="video.mp4" type="video/mp4">
+    </video>
+
+    <div id="door-left" class="door"></div>
+    <div id="door-right" class="door"></div>
+    
+    <button id="start-btn">افتح الدعوة</button>
+
+    <div id="screen-1" class="screen">
+        <h1 class="names-title">علي <span class="heart">❤️</span> فاطمة</h1>
+        <p class="sub-text">فرحتنا ما تكمل إلا بوجودكم ويانا</p>
+    </div>
+
+    <div id="screen-2" class="screen">
+        <h2 class="quote-text">أخذتها بـ فخر.. وصارت حلالي</h2>
+        <div class="date-box">
+            <div class="date-text">23 / 8 / 2026</div>
+        </div>
+        <p class="sub-text">ننتظركم تشاركونا هاليوم الحلو.. هلا بيكم وبجيتكم اللي تنورنا</p>
+    </div>
+
+    <div id="screen-3" class="screen">
+        <h2 class="quote-text">المكان والتفاصيل</h2>
+        <p class="sub-text" style="font-size: 1.6rem; color:#d4af37; margin-bottom: 10px;">قاعات بغداد الملكية - شارع الأميرات</p>
+        <p class="sub-text">حضوركم يزيد الفرحة فرحتين<br>بإنتظاركم</p>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('start-btn');
+        const doorLeft = document.getElementById('door-left');
+        const doorRight = document.getElementById('door-right');
+        const bgVideo = document.getElementById('bgVideo');
+        const bgAudio = document.getElementById('bgAudio');
+        
+        const screens = [
+            document.getElementById('screen-1'),
+            document.getElementById('screen-2'),
+            document.getElementById('screen-3')
+        ];
+        
+        let currentScreenIndex = 0;
+
+        startBtn.addEventListener('click', function() {
+            startBtn.style.opacity = '0';
+            startBtn.style.pointerEvents = 'none';
+
+            doorLeft.classList.add('open-left');
+            doorRight.classList.add('open-right');
+
+            bgVideo.play().catch(e => console.error(e));
+            bgAudio.play().catch(e => console.error(e));
+            
+            bgVideo.style.opacity = '1';
+
+            setTimeout(() => {
+                showNextScreen();
+            }, 1800);
+        });
+
+        function showNextScreen() {
+            if (currentScreenIndex > 0) {
+                screens[currentScreenIndex - 1].classList.remove('active');
+            }
+
+            if (currentScreenIndex < screens.length) {
+                screens[currentScreenIndex].classList.add('active');
+                
+                setTimeout(() => {
+                    currentScreenIndex++;
+                    showNextScreen();
+                }, 6000); 
+            } else {
+                currentScreenIndex = 0;
+                screens[0].classList.add('active');
+                setTimeout(() => {
+                    currentScreenIndex++;
+                    showNextScreen();
+                }, 6000);
+            }
+        }
+    </script>
+</body>
+</html>
